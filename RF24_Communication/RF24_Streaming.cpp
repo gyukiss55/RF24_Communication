@@ -14,32 +14,15 @@
 
 #include <Arduino.h>
 #include <SPI.h>
-#include <printf.h>
+//#include <printf.h>
 #include <RF24.h>       // RC transceiver module libraries
 #include <nRF24L01.h>
 
+#include "RF24_Definitions.h"
+
 #include "RF24_Streaming.h"
 
-#if defined ESP_ARDUINO_VERSION_MAJOR
-#define CE_PIN 4
-#define CSN_PIN 5
-#define TITLE_STR "ESP32"
-#endif
 
-#if defined ARDUINO_PICO_VERSION_MAJOR
-#define CE_PIN 22
-#define CSN_PIN 17
-#define TITLE_STR "Pico"
-#else
-  //#define CE_PIN 7
-  //#define CSN_PIN 8 
-#define CE_PIN 4
-#define CSN_PIN 5 
-#define TITLE_STR "ESP32 like"
-#endif
-
-// instantiate an object for the nRF24L01 transceiver
-RF24 radio(CE_PIN, CSN_PIN);
 
 // Let these addresses be used for the pair
 uint8_t address[][6] = { "1Node", "2Node" };

@@ -19,6 +19,7 @@
 #include <nRF24L01.h>
 
 #include "RF24_Definitions.h"
+#include "RF24_Init.h"
 
 #include "RF24_Streaming.h"
 
@@ -50,20 +51,11 @@ void SetupRF24Streaming()
 
     buffer[SIZE] = 0;  // add a NULL terminating character (for easy printing)
 
-    Serial.println(F(TITLE_STR));
-    //while (!Serial) {
-      // some boards need to wait to ensure access to serial over USB
-    //}
+    Serial.println();
+    Serial.print(TITLE_STR);
+    Serial.println(" 1.0.002. SetupRF24_Streaming:");
 
-    // initialize the transceiver on the SPI bus
-    if (!radio.begin()) {
-        Serial.println(F("radio hardware is not responding!!"));
-        while (1) {}  // hold in infinite loop
-    }
-
-    // print example's introductory prompt
-    Serial.print(F(TITLE_STR));
-    Serial.println(F(" RF24/examples/StreamingData"));
+    SetupRF24();
 
     // To set the radioNumber via the Serial monitor on startup
     Serial.println(F("Which radio is this? Enter '0' or '1'. Defaults to '0'"));

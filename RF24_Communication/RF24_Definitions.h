@@ -34,14 +34,14 @@
 	//assert defined STM32F4xx !
 	#define CE_PIN PB10
   
-	//#define CSN_PIN PB12
-	//#define SCK_PIN PB13
-	//#define RX_PIN PB14
-	//#define TX_PIN PB15
-	#define CSN_PIN PA4
-	#define SCK_PIN PA5
-	#define RX_PIN PA6
-	#define TX_PIN PA7
+	#define CSN_PIN PB12
+	#define SCK_PIN PB13
+	#define RX_PIN PB14
+	#define TX_PIN PB15
+	//#define CSN_PIN PA4
+	//#define SCK_PIN PA5
+	//#define RX_PIN PA6
+	//#define TX_PIN PA7
 
 	#define TITLE_STR "STM32F4 "
 //SPIClass SPI2(TX_PIN, RX_PIN, SCK_PIN); // MOSI, MISO, SCK

@@ -7,7 +7,11 @@
 
 #include "RF24_Definitions.h"
 
+#if defined (_RF24_INIT_)
+
 // instantiate an object for the nRF24L01 transceiver
 RF24 radio(CE_PIN, CSN_PIN);
 
 byte addresses[][6] = { "0" };
+
+#endif

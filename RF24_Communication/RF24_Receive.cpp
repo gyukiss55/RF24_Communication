@@ -7,25 +7,23 @@
 
 #include "RF24_Definitions.h"
 #include "RF24_Init.h"
+#include "RF24Data.h"
 
 #include "RF24_Receive.h"
 
+#if defined (_RF24_RECEIVE_)
 
-
-struct package
-{
-	int id = 0;
-	float temperature = 0.0;
-	char  text[100] = "empty";
-};
-
-
-typedef struct package Package;
 Package dataRec;
+uint32_t lastId = 0;
+uint32_t receivedNr = 0;
+uint32_t lostNr = 0;
+uint32_t lostMax = 0;
 
 
 void SetupRF24_Receive()
 {
+	InitData(dataRec);
+
 	Serial.println();
 	Serial.print(TITLE_STR);
 	Serial.println(" 1.0.002. SetupRF24_Receive:");
@@ -65,12 +63,40 @@ void LoopRF24_Receive()
 		}
 		Serial.print("\nPackage:");
 		Serial.print(dataRec.id);
-		Serial.print("\n");
-		Serial.println(dataRec.temperature);
-		Serial.println(dataRec.text);
-		digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
-		delay(100);                      // wait for a second
-		digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
+		Serial.print(", ");
+		Serial.print(dataRec.temperature);
+		Serial.print(", ");
+		Serial.print(dataRec.titleStr);
+		Serial.print(", ");
+		Serial.println(dataRec.dataStr);
+
+		uint32_t lost = 0;
+		if (lastId > 0 && dataRec.id > lastId) {
+			lost = dataRec.id - lastId - 1;
+			lostNr += lost;
+		}
+		lastId = dataRec.id;
+		if (lost > lostMax)
+			lostMax = lost;
+		receivedNr++;
+		Serial.print("\nRecNr:");
+		Serial.print(receivedNr, DEC);
+		Serial.print(", lostNr:");
+		Serial.print(lostNr, DEC);
+		Serial.print(", lostMax:");
+		Serial.print(lostMax, DEC);
+		if (lost > 0) {
+			Serial.print(", lostNow:");
+			Serial.print(lost, DEC);
+		}
+		Serial.println();
+
+		digitalWrite(LED_BUILTIN, LOW);  // turn the LED on (HIGH is the voltage level)
+		delay(10);                      // wait for a second
+		digitalWrite(LED_BUILTIN, HIGH);   // turn the LED off by making the voltage LOW
 	}
 
 }
+
+#endif
+

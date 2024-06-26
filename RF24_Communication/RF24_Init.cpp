@@ -9,9 +9,12 @@
 
 #include "RF24_Init.h"
 
+#if defined (_RF24_INIT_)
+
+
 #if defined ARDUINO_ARCH_RP2040
-//SPISettings spisettings(10000000, MSBFIRST, SPI_MODE0);
-	SPISettings spisettings(10000000, MSBFIRST, SPI_MODE0);
+//SPISettings spiSettings(10000000, MSBFIRST, SPI_MODE0);
+	SPISettings spiSettings(5000000, MSBFIRST, SPI_MODE0);
 #endif
 
 SPIClass* spi2 = nullptr;
@@ -30,7 +33,7 @@ void SetupRF24(int channel)
 	SPI.setCS(CSN_PIN);
 	SPI.setSCK(SCK_PIN);
 	SPI.setTX(TX_PIN);
-	SPI.begin();
+	SPI.begin(true);
 	radio.begin(&SPI);
 #elif defined (STM32F4xx)
 	Serial.println("Setup STM32F4 SPI:");
@@ -46,9 +49,11 @@ void SetupRF24(int channel)
 	SPI.setCS(CSN_PIN);
 	SPI.setSCK(SCK_PIN);
 	SPI.setTX(TX_PIN);
-	SPI.begin();
+	SPI.begin(true);
 	radio.begin(&SPI);
 #endif
 
 	radio.setChannel(channel);
 }
+
+#endif

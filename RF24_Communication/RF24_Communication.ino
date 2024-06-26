@@ -3,10 +3,6 @@
 #include "Arduino.h"
 #include "RF24_Definitions.h"
 
-//#define _RF24_STREAMING_
-//#define _RF24_SEND_
-#define _RF24_RECEIVE_
-//#define _RF24_SCANNER_
 
 #if defined _RF24_STREAMING_
  #include "RF24_Streaming.h"
@@ -16,6 +12,8 @@
  #include "RF24_Receive.h"
 #elif defined _RF24_SCANNER_
  #include "RF24_Scanner.h"
+#elif defined _RFM8X_TXR_
+ #include "RFM8_TXR.h"
 #else
 #endif
 
@@ -25,6 +23,8 @@ void setup()
     digitalWrite(LED_BUILTIN, LOW);
     Serial.begin(115200);
     delay(3000);
+    
+  #if defined _RF24_INIT_
     Serial.println(TITLE_STR);
     Serial.print("MOSI: ");
     Serial.println(MOSI);
@@ -36,6 +36,8 @@ void setup()
     Serial.println(SS);
     Serial.println();
     delay(5000);
+#endif
+
 #if defined _RF24_STREAMING_
     SetupRF24Streaming();
 #elif defined _RF24_SEND_
@@ -44,6 +46,9 @@ void setup()
     SetupRF24_Receive ();
 #elif defined _RF24_SCANNER_
     SetupRF24Scanner();
+#elif defined _RFM8X_TXR_
+    SetupRFM8TX();
+    SetupRFM8RX();
 #else
 #endif
 
@@ -59,7 +64,11 @@ void loop()
     LoopRF24_Receive ();
 #elif defined _RF24_SCANNER_
     LoopRF24Scanner();
+#elif defined _RFM8X_TXR_
+    LoopRFM8TX();
+    LoopRFM8RX();
 #else
 #endif
 
 }
+

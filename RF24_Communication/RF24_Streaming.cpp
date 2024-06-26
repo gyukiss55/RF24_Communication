@@ -23,7 +23,7 @@
 
 #include "RF24_Streaming.h"
 
-
+#if defined (_RF24_STREAMING_)
 
 // Let these addresses be used for the pair
 uint8_t address[][6] = { "1Node", "2Node" };
@@ -189,3 +189,5 @@ void MakePayload(uint8_t i) {
         buffer[j + 1] = chr + 48;
     }
 }
+
+#endif

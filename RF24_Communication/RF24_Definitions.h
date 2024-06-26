@@ -1,9 +1,13 @@
 // RF24_Definitions.h
 
 #pragma once
-#include "Arduino.h"
+#include <Arduino.h>
 #include <SPI.h>
 #include <RF24.h>       // RC transceiver module libraries
+
+#include "ProgramDefinitions.h"
+
+#if defined (_RF24_INIT_)
 
 #ifndef _ESP_ARDUINO_VERSION_MAJOR
 #define _ESP_ARDUINO_VERSION_MAJOR
@@ -43,7 +47,7 @@
 	//#define RX_PIN PA6
 	//#define TX_PIN PA7
 
-	#define TITLE_STR "STM32F4 "
+	#define TITLE_STR "STM32F4"
 //SPIClass SPI2(TX_PIN, RX_PIN, SCK_PIN); // MOSI, MISO, SCK
 // // Chip Select pin
 //const int CS_PIN = PB12;
@@ -82,3 +86,5 @@
 
 extern RF24 radio;
 extern byte addresses[][6];
+
+#endif

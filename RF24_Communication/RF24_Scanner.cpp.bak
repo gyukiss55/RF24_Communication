@@ -90,7 +90,7 @@ void SetupRF24Scanner(void)
     // Setup and configure rf radio
     SetupRF24();
 
-    radio.setPALevel(RF24_PA_MIN);
+    radio.setPALevel(RF24_PA_MAX);
     radio.stopConstCarrier();  // in case MCU was reset while radio was emitting carrier wave
     radio.setAutoAck(false);   // Don't acknowledge arbitrary signals
     radio.disableCRC();        // Accept any signal we find
@@ -243,4 +243,4 @@ void printHeader()
     Serial.println();
 }
 
-#endif // (_RF24_SCANNER_)
+#endif

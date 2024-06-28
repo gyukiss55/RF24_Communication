@@ -1,0 +1,33 @@
+Setup STM32F4 SPI:
+================ SPI Configuration ================
+CSN Pin			= 27
+CE Pin			= 8
+SPI Frequency		= 10 Mhz
+================ NRF Configuration ================
+Channel			= 115 (~ 2515 MHz)
+RF Data Rate		= 1 MBPS
+RF Power Amplifier	= PA_MAX
+RF Low Noise Amplifier	= Enabled
+CRC Length		= 16 bits
+Address Length		= 5 bytes
+Static Payload Length	= 32 bytes
+Auto Retry Delay	= 1500 microseconds
+Auto Retry Attempts	= 15 maximum
+Packets lost on
+    current channel	= 0
+Retry attempts made for
+    last transmission	= 0
+Multicast		= Disabled
+Custom ACK Payload	= Disabled
+Dynamic Payloads	= Disabled
+Auto Acknowledgment	= Enabled
+Primary Mode		= TX
+TX address		= 0xE7E7E7E7E7
+Pipe 0 ( open ) bound	= 0xE7E7E7E7E7
+Pipe 1 ( open ) bound	= 0xC2C2C2C2C2
+Pipe 2 (closed) bound	= 0xC3
+Pipe 3 (closed) bound	= 0xC4
+Pipe 4 (closed) bound	= 0xC5
+Pipe 5 (closed) bound	= 0xC6
+strlen = 858
+Select your Data Rate. Enter '1' for 1 Mbps, '2' for 2 Mbps, '3' for 250 kbps. Defaults to 1Mbps.

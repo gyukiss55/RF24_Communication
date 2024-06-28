@@ -91,8 +91,14 @@ void LoopRF24_Receive()
 		radio.read(&dataRec, sizeof(dataRec));
 #endif // (_OLD_SEND_VERSION_)
 
-		snprintf(printBuffer, sizeof(printBuffer), "\nReceived:%d. %02.2f, %s, %s\n", dataSend.id, dataSend.temperature, dataSend.titleStr, dataSend.dataStr);
-		Serial.print(printBuffer);
+		Serial.print("\nReceived:");
+		Serial.print(dataRec.id);
+		Serial.print(", ");
+		Serial.print(dataRec.temperature);
+		Serial.print(", ");
+		Serial.print(dataRec.titleStr);
+		Serial.print(", ");
+		Serial.println(dataRec.dataStr);
 
 		uint32_t lost = 0;
 		if (lastId > 0 && dataRec.id > lastId) {
@@ -125,8 +131,6 @@ void LoopRF24_Receive()
 		dataSend.id = dataRec.id;
 		dataSend.temperature = dataRec.temperature;
 		strncpy(dataSend.titleStr, t.c_str(), t.length());
-		String d("ABCDEFGHIJKLMN");
-		strncpy(dataSend.dataStr, d.c_str(), d.length());
 
 		if (!radio.write(&dataSend, sizeof(dataSend))) {
 			Serial.println("RX: No ACK");

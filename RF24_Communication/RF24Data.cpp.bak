@@ -13,7 +13,4 @@ void InitData(Package& package)
 	package.dataStr[0] = 0;
 }
 
-char printBuffer[100];
-
-
-#endif // (_RF24_INIT_)
+#endif

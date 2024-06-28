@@ -1,0 +1,33 @@
+Pico like RF24/examples/scanner/
+Setup RP2040 SPI:
+================ SPI Configuration ================
+CSN Pin			= 17
+CE Pin			= 22
+SPI Frequency		= 10 Mhz
+================ NRF Configuration ================
+Channel			= 115 (~ 2515 MHz)
+RF Data Rate		= 1 MBPS
+RF Power Amplifier	= PA_MAX
+RF Low Noise Amplifier	= Enabled
+CRC Length		= 16 bits
+Address Length		= 5 bytes
+Static Payload Length	= 32 bytes
+Auto Retry Delay	= 1500 microseconds
+Auto Retry Attempts	= 15 maximum
+Packets lost on
+    current channel	= 0
+Retry attempts made for
+    last transmission	= 0
+Multicast		= Disabled
+Custom ACK Payload	= Disabled
+Dynamic Payloads	= Disabled
+Auto Acknowledgment	= Enabled
+Primary Mode		= TX
+TX address		= 0xE7E7E7E7E7
+Pipe 0 ( open ) bound	= 0xE7E7E75555
+Pipe 1 ( open ) bound	= 0xC2C2C2AAAA
+Pipe 2 (closed) bound	= 0xA0
+Pipe 3 (closed) bound	= 0xAB
+Pipe 4 (closed) bound	= 0xAC
+Pipe 5 (closed) bound	= 0xAD
+strlen = 859

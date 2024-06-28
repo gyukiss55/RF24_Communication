@@ -94,24 +94,11 @@ void LoopRF24_Receive()
 		snprintf(printBuffer, sizeof(printBuffer), "\nReceived:%d. %02.2f, %s, %s\n", dataSend.id, dataSend.temperature, dataSend.titleStr, dataSend.dataStr);
 		Serial.print(printBuffer);
 
-		uint32_t lost = 0;
-		if (lastId > 0 && dataRec.id > lastId) {
-			lost = dataRec.id - lastId - 1;
-			lostNr += lost;
+		if (!radio.write(&dataSend, sizeof(dataSend))) {
+			Serial.println("RX: No ACK");
 		}
-		lastId = dataRec.id;
-		if (lost > lostMax)
-			lostMax = lost;
-		receivedNr++;
-		Serial.print("\nRecNr:");
-		Serial.print(receivedNr, DEC);
-		Serial.print(", lostNr:");
-		Serial.print(lostNr, DEC);
-		Serial.print(", lostMax:");
-		Serial.print(lostMax, DEC);
-		if (lost > 0) {
-			Serial.print(", lostNow:");
-			Serial.print(lost, DEC);
+		else {
+			Serial.println("RX: ACK");
 		}
 		Serial.println();
 		

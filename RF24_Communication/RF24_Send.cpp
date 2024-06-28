@@ -75,9 +75,14 @@ void LoopRF24_Send()
 		Serial.println("TX: ACK");
 #endif //(_OLD_SEND_VERSION_)
 
-	snprintf(printBuffer, sizeof(printBuffer), "\nSend:%d. %02.2f, %s, %s\n", dataSend.id, dataSend.temperature, dataSend.titleStr, dataSend.dataStr);
-	Serial.print(printBuffer);
+	Serial.print("\nSent:");
+	Serial.print(dataSend.id);
+	Serial.print(", ");
+	Serial.println(dataSend.temperature);
+	Serial.print(", ");
+	Serial.println(dataSend.titleStr);
 	dataSend.id = dataSend.id + 1;
+
 	dataSend.temperature = dataSend.temperature + 0.1;
 
 #if defined (_OLD_SEND_VERSION_)

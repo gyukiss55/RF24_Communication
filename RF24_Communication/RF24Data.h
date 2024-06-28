@@ -23,5 +23,4 @@ void InitData(Package& package);
 
 extern char printBuffer[100];
 
-
 #endif //  (_RF24_INIT_)

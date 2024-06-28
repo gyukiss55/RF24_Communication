@@ -40,7 +40,7 @@ void SetupRF24_Send()
 	radio.setRetries(200, 50);
 	radio.openReadingPipe(1, ADDRESS_RECEIVER1);
 	radio.openWritingPipe(ADDRESS_SENDER);
-#endif
+#endif // (_OLD_SEND_VERSION_)
 	radio.printDetails();
 	delay(1000);
 	Serial.print(titleStr);
@@ -60,7 +60,7 @@ void SetupRF24_Send()
 
 #if defined (_OLD_SEND_VERSION_)
 #else
-#endif
+#endif //(_OLD_SEND_VERSION_)
 
 void LoopRF24_Send()
 {
@@ -73,14 +73,14 @@ void LoopRF24_Send()
 		Serial.println("TX: No ACK");
 	else
 		Serial.println("TX: ACK");
-#endif
+#endif //(_OLD_SEND_VERSION_)
 
-	Serial.print("\Sent:");
+	Serial.print("\nSent:");
 	Serial.print(dataSend.id);
 	Serial.print(", ");
 	Serial.println(dataSend.temperature);
 	Serial.print(", ");
-	Serial.println(dataSend.text);
+	Serial.println(dataSend.titleStr);
 	dataSend.id = dataSend.id + 1;
 
 	dataSend.temperature = dataSend.temperature + 0.1;
@@ -105,17 +105,17 @@ void LoopRF24_Send()
 	// Now read the data that is waiting for us in the nRF24L01's buffer
 	radio.read(&dataReceived, sizeof(dataReceived));
 
-	Serial.print("\Received:");
+	Serial.print("\nReceived:");
 	Serial.print(dataReceived.id);
 	Serial.print(", ");
 	Serial.println(dataReceived.temperature);
 	Serial.print(", ");
-	Serial.println(dataReceived.text);
+	Serial.println(dataReceived.titleStr);
 
 	BlinkLed(100, 500 - 100);
 
-#endif
+#endif // (_OLD_SEND_VERSION_)
 
 }
 
-#endif
+#endif  //(_RF24_SEND_)

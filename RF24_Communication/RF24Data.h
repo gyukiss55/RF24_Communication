@@ -6,7 +6,7 @@
 
 #include "ProgramDefinitions.h"
 
-#if defined (_RF24_STREAMING_)
+#if defined (_RF24_INIT_)
 
 struct package
 {
@@ -21,4 +21,4 @@ typedef struct package Package;
 
 void InitData(Package& package);
 
-#endif
+#endif //  (_RF24_INIT_)

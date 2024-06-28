@@ -14,4 +14,4 @@ void LoopRFM8TX ();
 
 void LoopRFM8RX ();
 
-#endif
+#endif // (_RFM8X_TXR_)

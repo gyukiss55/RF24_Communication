@@ -14,4 +14,4 @@ RF24 radio(CE_PIN, CSN_PIN);
 
 byte addresses[][6] = { "0" };
 
-#endif
+#endif //(_RF24_INIT_)

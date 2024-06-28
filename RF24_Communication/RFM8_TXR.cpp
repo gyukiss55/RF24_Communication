@@ -1,6 +1,11 @@
 // RFM8_TXR.cpp
 
 #include <Arduino.h>
+
+#include "ProgramDefinitions.h"
+
+#if defined (_RFM8X_TXR_)
+
 #include <pico/stdlib.h>
 #include <pico/sync.h>
 
@@ -10,8 +15,6 @@
 #include "RPi_Pico_TimerInterrupt.h"
 
 #include "RFM8_TXR.h"
-
-#if defined (_RFM8X_TXR_)
 
 const int ledPin = 25;
 const int txPin = 4;

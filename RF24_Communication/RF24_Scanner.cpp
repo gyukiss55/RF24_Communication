@@ -238,4 +238,4 @@ void printHeader() {
     Serial.println();
 }
 
-#endif
+#endif // (_RF24_SCANNER_)

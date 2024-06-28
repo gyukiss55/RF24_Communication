@@ -9,9 +9,6 @@
 
 #if defined (_RF24_INIT_)
 
-#ifndef _ESP_ARDUINO_VERSION_MAJOR
-#define _ESP_ARDUINO_VERSION_MAJOR
-#endif
 
 /*
  * NRF24L01     Arduino_ Uno  Blue_Pill(stm32f01C)
@@ -31,8 +28,6 @@
 	assert defined ESP8266 !
 #elif defined(ESP32) 
 
-	#define LED_BUILTIN 2
-
 	#define CE_PIN 4
 	#define CSN_PIN 5
 	#define RX_PIN 19
@@ -40,11 +35,9 @@
 	#define TX_PIN 23
 
 	#define TITLE_STR "ESP32 "
-	//assert defined ESP32 !
 
-#elif defined(RASPI)
 
-	//#define LED_BUILTIN 25
+#elif defined(RASPI) || defined (ARDUINO_PICO_MAJOR)
 
 	//#define CE_PIN 22
 	//#define CSN_PIN 17
@@ -59,11 +52,10 @@
 	#define TX_PIN 4
 
 	#define TITLE_STR "Pico "
-#elif defined(STM32F1xx)
-<<<<<<< HEAD
-	//assert defined STM32F1xx !
 
-	//#define LED_BUILTIN 13
+	// assert defined RASPI !
+
+#elif defined(STM32F1xx)
 
 	#define CE_PIN PB0
 	#define CSN_PIN PA4
@@ -71,10 +63,11 @@
 	#define RX_PIN PA6
 	#define TX_PIN PA7
 
-#elif defined(STM32F4xx)
-	//assert defined STM32F4xx !
+	#define TITLE_STR "STM32F1"
 
-	//#define LED_BUILTIN 13
+	// assert defined STM32F1xx !
+
+#elif defined(STM32F4xx)
 
 	#define CE_PIN PB10
   
@@ -85,18 +78,13 @@
 
 	#define TITLE_STR "STM32F4"
 
+	// assert defined STM32F4xx !
+
 #else
-	//#define LED_BUILTIN 25
 
 	assert defined else !!!!!
 
-	#define CE_PIN 22
-	#define CSN_PIN 17
-	#define RX_PIN 16
-	#define SCK_PIN 18
-	#define TX_PIN 19
-
-	#define TITLE_STR "Pico like "
+	//#define TITLE_STR "Undefined "
 
 #endif
 

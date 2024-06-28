@@ -43,7 +43,7 @@ void SetupRF24_Receive()
 	radio.openWritingPipe(ADDRESS_RECEIVER1);
 	radio.startListening();
 	radio.setAutoAck(true);
-#endif
+#endif //(_OLD_SEND_VERSION_)
 
 	Serial.print("MOSI: ");
 	Serial.println(MOSI);
@@ -62,7 +62,7 @@ void SetupRF24_Receive()
 
 #if defined (_OLD_SEND_VERSION_)
 #else
-#endif
+#endif //(_OLD_SEND_VERSION_)
 
 void LoopRF24_Receive()
 {
@@ -78,23 +78,25 @@ void LoopRF24_Receive()
 		}
 #else
 		radio.read(&dataRec, sizeof(dataRec));
-#endif
+#endif // (_OLD_SEND_VERSION_)
 
 		Serial.print("\Received:");
 		Serial.print(dataRec.id);
 		Serial.print(", ");
 		Serial.println(dataRec.temperature);
 		Serial.print(", ");
-		Serial.println(dataRec.text);
+		Serial.println(dataRec.titleStr);
 
 #if defined (_OLD_SEND_VERSION_)
 #else
 		delay(100);
 		radio.stopListening();
 
+		//String t(titleStr);
+		String t(TITLE_STR);
 		dataSend.id = dataRec.id;
 		dataSend.temperature = dataRec.temperature;
-		dataSend.text = TITLE_STR;
+		strncpy(dataSend.titleStr, t.c_str(), t.length());
 
 		if (!radio.write(&dataSend, sizeof(dataSend))) {
 			Serial.println("RX: No ACK");
@@ -103,7 +105,7 @@ void LoopRF24_Receive()
 			Serial.println("RX: ACK");
 		}
 		radio.startListening();
-#endif
+#endif // (_OLD_SEND_VERSION_)
 
 		BlinkLed(50, 100);
 

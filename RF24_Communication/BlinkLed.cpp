@@ -2,7 +2,10 @@
 
 #include "Arduino.h"
 
+#include "ProgramDefinitions.h"
+
 #include "BlinkLed.h"
+
 
 void BlinkLed(int t1, int t2)
 {

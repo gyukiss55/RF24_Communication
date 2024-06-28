@@ -35,6 +35,14 @@ void SetupRF24(int channel)
 	SPI.setTX(TX_PIN);
 	SPI.begin(true);
 	radio.begin(&SPI);
+#elif defined (STM32F1xx)
+	Serial.println("Setup STM32F1 SPI:");
+	spi2 = new SPIClass(TX_PIN, RX_PIN, SCK_PIN);
+	spi2->begin();
+//	spi2->setClockDivider(SPI_CLOCK_DIV8); // Adjust as necessary
+//	spi2->setBitOrder(MSBFIRST);           // Most significant bit first
+//	spi2->setDataMode(SPI_MODE0);          // SPI mode 0
+	radio.begin(spi2);
 #elif defined (STM32F4xx)
 	Serial.println("Setup STM32F4 SPI:");
 	spi2 = new SPIClass(TX_PIN, RX_PIN, SCK_PIN);
@@ -56,4 +64,4 @@ void SetupRF24(int channel)
 	radio.setChannel(channel);
 }
 
-#endif
+#endif //  (_RF24_INIT_)

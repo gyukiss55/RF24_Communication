@@ -45,6 +45,9 @@ void SetupRF24_Receive()
 	Serial.println(SS);
 	Serial.println();
 	digitalWrite(LED_BUILTIN, HIGH);
+
+	RF24_PrintState();
+
 }
 
 void LoopRF24_Receive()

@@ -97,6 +97,8 @@ void SetupRF24Streaming()
     // printf_begin();             // needed only once for printing details
     // radio.printDetails();       // (smaller) function that prints raw register values
     // radio.printPrettyDetails(); // (larger) function that prints human readable data
+    RF24_PrintState();
+
 
 }  // setup()
 

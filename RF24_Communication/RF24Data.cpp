@@ -2,7 +2,7 @@
 
 #include "RF24Data.h"
 
-#if defined (_RF24_STREAMING_)
+#if defined (_RF24_INIT_)
 
 void InitData(Package& package)
 {

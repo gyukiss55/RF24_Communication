@@ -6,7 +6,7 @@
 
 #include "ProgramDefinitions.h"
 
-#if defined (_RF24_STREAMING_)
+#if defined (_RF24_INIT_)
 
 struct package
 {

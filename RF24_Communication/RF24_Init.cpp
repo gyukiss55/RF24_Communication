@@ -35,7 +35,7 @@ void SetupRF24(int channel)
 	SPI.setTX(TX_PIN);
 	SPI.begin(true);
 	radio.begin(&SPI);
-#elif defined (STM32F4xx)
+#elif defined (STM32F4xx) || defined (STM32F1xx)
 	Serial.println("Setup STM32F4 SPI:");
 	spi2 = new SPIClass(TX_PIN, RX_PIN, SCK_PIN);
 	spi2->begin();
@@ -54,6 +54,19 @@ void SetupRF24(int channel)
 #endif
 
 	radio.setChannel(channel);
+
+	RF24_PrintState();
+
+}
+
+void RF24_PrintState()
+{
+	char buffer[870] = { '\0' };
+	uint16_t used_chars = radio.sprintfPrettyDetails(buffer);
+	Serial.println(buffer);
+	Serial.print(F("strlen = "));
+	Serial.println(used_chars + 1); // +1 for c-strings' null terminating byte
+
 }
 
 #endif

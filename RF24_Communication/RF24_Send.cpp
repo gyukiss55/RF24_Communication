@@ -45,6 +45,9 @@ void SetupRF24_Send()
 		dataSend.dataStr[i] = i % 10 + '0';
 		dataSend.dataStr[i + 1] = 0;
 	}
+
+	RF24_PrintState();
+
 }
 
 void LoopRF24_Send()

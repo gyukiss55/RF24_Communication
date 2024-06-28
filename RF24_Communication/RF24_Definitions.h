@@ -33,10 +33,17 @@
 	#define TX_PIN 19
 	#define TITLE_STR "Pico "
 #elif defined(STM32F1xx)
-	assert defined STM32F1xx !
+	//assert defined STM32F1xx !
+	#define CE_PIN PA8
+  
+	#define CSN_PIN PB12
+	#define SCK_PIN PB13
+	#define RX_PIN PB14
+	#define TX_PIN PB15
+	#define TITLE_STR "STM32F1"
 #elif defined(STM32F4xx)
 	//assert defined STM32F4xx !
-	#define CE_PIN PB10
+	#define CE_PIN PA8
   
 	#define CSN_PIN PB12
 	#define SCK_PIN PB13

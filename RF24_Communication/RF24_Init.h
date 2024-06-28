@@ -7,5 +7,6 @@
 #if defined (_RF24_INIT_)
 
 void SetupRF24(int channel = 115);
+void RF24_PrintState();
 
 #endif

@@ -78,7 +78,6 @@ void LoopRF24_Receive()
 	if (radio.available())
 	{
 #if defined (_OLD_SEND_VERSION_)
-
 		while (radio.available())
 		{
 
@@ -88,10 +87,15 @@ void LoopRF24_Receive()
 			radio.read(&dataRec, sizeof(dataRec));
 		}
 #else
-		radio.read(&dataRec, sizeof(dataRec));
+		uint32_t packetReceived = 0;
+		//while (radio.available())
+		{
+			radio.read(&dataRec, sizeof(dataRec));
+			packetReceived++;
+		}
 #endif // (_OLD_SEND_VERSION_)
 
-		snprintf(printBuffer, sizeof(printBuffer), "\nReceived:%d. %02.2f, %s, %s\n", dataSend.id, dataSend.temperature, dataSend.titleStr, dataSend.dataStr);
+		snprintf(printBuffer, sizeof(printBuffer), "\nReceived (%d):%d. %02.2f, %s, %s\n", packetReceived, dataRec.id, dataRec.temperature, dataRec.titleStr, dataRec.dataStr);
 		Serial.print(printBuffer);
 
 		if (!radio.write(&dataSend, sizeof(dataSend))) {

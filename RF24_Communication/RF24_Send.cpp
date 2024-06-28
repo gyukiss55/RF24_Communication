@@ -75,12 +75,9 @@ void LoopRF24_Send()
 		Serial.println("TX: ACK");
 #endif //(_OLD_SEND_VERSION_)
 
-	Serial.print("\nSent:");
-	Serial.print(dataSend.id);
-	Serial.print(", ");
-	Serial.println(dataSend.temperature);
-	Serial.print(", ");
-	Serial.println(dataSend.titleStr);
+	snprintf(printBuffer, sizeof(printBuffer), "\nSent:%d. %02.2f, %s, %s\n", dataSend.id, dataSend.temperature, dataSend.titleStr, dataSend.dataStr);
+	Serial.print(printBuffer);
+
 	dataSend.id = dataSend.id + 1;
 
 	dataSend.temperature = dataSend.temperature + 0.1;
@@ -103,9 +100,14 @@ void LoopRF24_Send()
 		}
 	}
 	// Now read the data that is waiting for us in the nRF24L01's buffer
-	radio.read(&dataReceived, sizeof(dataReceived));
+	uint32_t packetReceived = 0;
+	//while (radio.available())
+	{
+		radio.read(&dataReceived, sizeof(dataReceived));
+		packetReceived++;
+	}
 
-	snprintf(printBuffer, sizeof(printBuffer), "\nReceived:%d. %02.2f, %s, %s\n", dataReceived.id, dataReceived.temperature, dataReceived.titleStr, dataReceived.dataStr);
+	snprintf(printBuffer, sizeof(printBuffer), "\nReceived(%d):%d. %02.2f, %s, %s\n", packetReceived, dataReceived.id, dataReceived.temperature, dataReceived.titleStr, dataReceived.dataStr);
 	Serial.print(printBuffer);
 
 	BlinkLed(50, 200 - 100);

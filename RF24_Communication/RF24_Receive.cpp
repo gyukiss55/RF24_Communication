@@ -7,6 +7,7 @@
 
 #include "RF24_Definitions.h"
 #include "RF24_Init.h"
+#include "BlinkLed.h"
 
 #include "RF24_Receive.h"
 
@@ -22,6 +23,7 @@ struct package
 
 typedef struct package Package;
 Package dataRec;
+Package dataSend;
 
 
 void SetupRF24_Receive()
@@ -31,11 +33,22 @@ void SetupRF24_Receive()
 	Serial.println(" 1.0.002. SetupRF24_Receive:");
 
 	SetupRF24();
+	radio.setChannel(115);
 
+#if defined (_OLD_SEND_VERSION_)
 	radio.setPALevel(RF24_PA_MAX);
 	radio.setDataRate(RF24_250KBPS);
 	radio.openReadingPipe(1, addresses[0]);
 	radio.startListening();
+#else
+	radio.setPALevel(RF24_PA_LOW);
+	radio.setDataRate(RF24_2MBPS);
+	radio.setRetries(255, 5);
+	radio.openReadingPipe(1, ADDRESS_SENDER);
+	radio.openWritingPipe(ADDRESS_RECEIVER1);
+	radio.startListening();
+	radio.setAutoAck(true);
+#endif
 
 	Serial.print("MOSI: ");
 	Serial.println(MOSI);
@@ -46,31 +59,57 @@ void SetupRF24_Receive()
 	Serial.print("  SS: ");
 	Serial.println(SS);
 	Serial.println();
-	digitalWrite(LED_BUILTIN, HIGH);
+
+	radio.printDetails();
+
+	BlinkLed(50, 100);
 }
+
+#if defined (_OLD_SEND_VERSION_)
+#else
+#endif
 
 void LoopRF24_Receive()
 {
 
 	if (radio.available())
 	{
-
+#if defined (_OLD_SEND_VERSION_)
+		Serial.print(TITLE_STR);
+		Serial.println("LoopRF24_Receive: start read");
 		while (radio.available())
 		{
-
-			Serial.print(TITLE_STR);
-			Serial.println("LoopRF24_Receive: start read");
-
 			radio.read(&dataRec, sizeof(dataRec));
 		}
-		Serial.print("\nPackage:");
+#else
+		radio.read(&dataRec, sizeof(dataRec));
+#endif
+
+		Serial.print("\Received:");
 		Serial.print(dataRec.id);
 		Serial.print("\n");
 		Serial.println(dataRec.temperature);
 		Serial.println(dataRec.text);
-		digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
-		delay(100);                      // wait for a second
-		digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
+
+#if defined (_OLD_SEND_VERSION_)
+#else
+		delay(100);
+		radio.stopListening();
+
+		dataSend.id = dataRec.id;
+		dataSend.temperature = dataRec.temperature;
+		dataSend.text = TITLE_STR;
+
+		if (!radio.write(&dataSend, sizeof(dataSend))) {
+			Serial.println("RX: No ACK");
+		}
+		else {
+			Serial.println("RX: ACK");
+		}
+		radio.startListening();
+#endif
+
+		BlinkLed(50, 100);
 	}
 
 }

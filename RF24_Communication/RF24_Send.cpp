@@ -8,27 +8,23 @@
 
 #include "RF24_Definitions.h"
 #include "RF24_Init.h"
+#include "RF24Data.h"
 #include "BlinkLed.h"
 
 #include "RF24_Send.h"
 
+#if defined (_RF24_SEND_)
 
-struct package
-{
-	int id = 0;
-	float temperature = 0.0;
-	char  text[100] =  push;
-};
-
-
-typedef struct package Package;
 Package dataSend;
 Package dataReceived;
 
+char printBuffer[50];
+
 void SetupRF24_Send()
 {
+	const char* titleStr = TITLE_STR;
 	Serial.println();
-	Serial.print(TITLE_STR);
+	Serial.print(titleStr);
 	Serial.println(" 1.0.002. SetupRF24_Send:");
 
 	SetupRF24();
@@ -47,9 +43,19 @@ void SetupRF24_Send()
 #endif
 	radio.printDetails();
 	delay(1000);
-	Serial.print(TITLE_STR);
+	Serial.print(titleStr);
 	Serial.println(" SetupRF24_Send:");
 	digitalWrite(LED_BUILTIN, HIGH);
+	//memset(&dataSend, 0, sizeof(dataSend));
+	InitData(dataSend);
+
+	String t(titleStr);
+
+	strncpy(dataSend.titleStr, t.c_str (), t.length());
+	for (int i = 0; i < sizeof(dataSend.dataStr) - 1; ++i) {
+		dataSend.dataStr[i] = i % 10 + '0';
+		dataSend.dataStr[i + 1] = 0;
+	}
 }
 
 #if defined (_OLD_SEND_VERSION_)
@@ -71,10 +77,12 @@ void LoopRF24_Send()
 
 	Serial.print("\Sent:");
 	Serial.print(dataSend.id);
-	Serial.print("\n");
+	Serial.print(", ");
 	Serial.println(dataSend.temperature);
+	Serial.print(", ");
 	Serial.println(dataSend.text);
 	dataSend.id = dataSend.id + 1;
+
 	dataSend.temperature = dataSend.temperature + 0.1;
 
 #if defined (_OLD_SEND_VERSION_)
@@ -96,14 +104,18 @@ void LoopRF24_Send()
 	}
 	// Now read the data that is waiting for us in the nRF24L01's buffer
 	radio.read(&dataReceived, sizeof(dataReceived));
+
 	Serial.print("\Received:");
 	Serial.print(dataReceived.id);
-	Serial.print("\n");
+	Serial.print(", ");
 	Serial.println(dataReceived.temperature);
+	Serial.print(", ");
 	Serial.println(dataReceived.text);
+
 	BlinkLed(100, 500 - 100);
 
-	// Show user what we sent and what we got back
 #endif
+
 }
 
+#endif

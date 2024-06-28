@@ -7,27 +7,22 @@
 
 #include "RF24_Definitions.h"
 #include "RF24_Init.h"
+#include "RF24Data.h"
+
 #include "BlinkLed.h"
 
 #include "RF24_Receive.h"
 
+#if defined (_RF24_RECEIVE_)
 
-
-struct package
-{
-	int id = 0;
-	float temperature = 0.0;
-	char  text[100] = "empty";
-};
-
-
-typedef struct package Package;
 Package dataRec;
 Package dataSend;
 
 
 void SetupRF24_Receive()
 {
+	InitData(dataRec);
+
 	Serial.println();
 	Serial.print(TITLE_STR);
 	Serial.println(" 1.0.002. SetupRF24_Receive:");
@@ -87,8 +82,9 @@ void LoopRF24_Receive()
 
 		Serial.print("\Received:");
 		Serial.print(dataRec.id);
-		Serial.print("\n");
+		Serial.print(", ");
 		Serial.println(dataRec.temperature);
+		Serial.print(", ");
 		Serial.println(dataRec.text);
 
 #if defined (_OLD_SEND_VERSION_)
@@ -110,6 +106,10 @@ void LoopRF24_Receive()
 #endif
 
 		BlinkLed(50, 100);
+
 	}
 
 }
+
+#endif // (_RF24_RECEIVE_)
+

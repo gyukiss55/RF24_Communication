@@ -60,6 +60,8 @@
 
 #include "RF24_Scanner.h"
 
+#if defined (_RF24_SCANNER_)
+
 //
 // Channel info
 //
@@ -235,3 +237,5 @@ void printHeader() {
         Serial.print(F("~"));
     Serial.println();
 }
+
+#endif

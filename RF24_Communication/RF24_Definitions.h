@@ -39,17 +39,17 @@
 
 #elif defined(RASPI) || defined (ARDUINO_PICO_MAJOR)
 
-	//#define CE_PIN 22
-	//#define CSN_PIN 17
-	//#define RX_PIN 16
-	//#define SCK_PIN 18
-	//#define TX_PIN 19
+	#define RX_PIN 16
+	#define CSN_PIN 17
+	#define SCK_PIN 18
+	#define TX_PIN 19
+	#define CE_PIN 22
 
-	#define CE_PIN 14
-	#define CSN_PIN 15
-	#define RX_PIN 7
-	#define SCK_PIN 6
-	#define TX_PIN 4
+	//#define CE_PIN 14
+	//#define CSN_PIN 15
+	//#define TX_PIN 4
+	//#define SCK_PIN 6
+	//#define RX_PIN 7
 
 	#define TITLE_STR "Pico "
 

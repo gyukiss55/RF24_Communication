@@ -18,8 +18,8 @@
 #endif
 
 //#define _RF24_STREAMING_
-#define _RF24_SEND_
-//#define _RF24_RECEIVE_
+//#define _RF24_SEND_
+#define _RF24_RECEIVE_
 //#define _RF24_SCANNER_
 
 #if defined(_RF24_STREAMING_) || \

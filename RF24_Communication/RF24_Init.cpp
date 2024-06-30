@@ -12,7 +12,7 @@
 #if defined (_RF24_INIT_)
 
 
-#if defined ARDUINO_ARCH_RP2040
+#if defined (ARDUINO_ARCH_RP2040) || defined(RASPI) || defined (ARDUINO_PICO_MAJOR)
 //SPISettings spiSettings(10000000, MSBFIRST, SPI_MODE0);
 	SPISettings spiSettings(5000000, MSBFIRST, SPI_MODE0);
 #endif
@@ -27,7 +27,7 @@ void SetupRF24(int channel)
 	spi2 = new SPIClass(VSPI);
 	spi2->begin();
 	radio.begin(spi2);
-#elif defined (ARDUINO_ARCH_RP2040)
+#elif defined (ARDUINO_ARCH_RP2040) || defined(RASPI) || defined (ARDUINO_PICO_MAJOR)
 	Serial.println("Setup RP2040 SPI:");
 	SPI.setRX(RX_PIN);
 	SPI.setCS(CSN_PIN);

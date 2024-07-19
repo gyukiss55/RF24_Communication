@@ -69,6 +69,14 @@ void SetupRF24(int channel)
 
 void RF24_PrintState()
 {
+	String str;
+	str += "RX_PIN:" + String(RX_PIN);
+	str += "CSN_PIN:" + String(CSN_PIN);
+	str += "SCK_PIN:" + String(SCK_PIN);
+	str += "RX_PIN:" + String(RX_PIN);
+	str += "TX_PIN:" + String(TX_PIN);
+	Serial.println(str);
+
 	char buffer[870] = { '\0' };
 	uint16_t used_chars = radio.sprintfPrettyDetails(buffer);
 	Serial.println(buffer);

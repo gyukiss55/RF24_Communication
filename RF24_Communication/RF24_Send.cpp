@@ -39,6 +39,12 @@ void SetupRF24_Send()
 	radio.setRetries(200, 50);
 	radio.openReadingPipe(1, ADDRESS_RECEIVER1);
 	radio.openWritingPipe(ADDRESS_SENDER);
+#if defined (_RF24_SEND_RECEIVE_NOECHO_)
+
+#else
+	radio.setAutoAck(true);
+#endif // (_RF24_SEND_RECEIVE_NOECHO_)
+
 #endif // (_OLD_SEND_VERSION_)
 
 	radio.printDetails();
@@ -83,7 +89,13 @@ void LoopRF24_Send()
 	dataSend.temperature = dataSend.temperature + 0.1;
 
 #if defined (_OLD_SEND_VERSION_)
+
 #else
+
+#if defined (_RF24_SEND_RECEIVE_NOECHO_)
+
+#else
+
 	// Now listen for a response
 	radio.startListening();
 
@@ -109,6 +121,7 @@ void LoopRF24_Send()
 
 	snprintf(printBuffer, sizeof(printBuffer), "\nReceived(%d):%d. %02.2f, %s, %s\n", packetReceived, dataReceived.id, dataReceived.temperature, dataReceived.titleStr, dataReceived.dataStr);
 	Serial.print(printBuffer);
+#endif // (_RF24_SEND_RECEIVE_NOECHO_)
 
 	BlinkLed(50, 200 - 100);
 

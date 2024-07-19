@@ -49,7 +49,12 @@ void SetupRF24_Receive()
 	radio.openReadingPipe(1, ADDRESS_SENDER);
 	radio.openWritingPipe(ADDRESS_RECEIVER1);
 	radio.startListening();
+#if defined (_RF24_SEND_RECEIVE_NOECHO_)
+
+#else
 	radio.setAutoAck(true);
+#endif // (_RF24_SEND_RECEIVE_NOECHO_)
+
 #endif //(_OLD_SEND_VERSION_)
 
 	Serial.print("MOSI: ");
@@ -98,7 +103,10 @@ void LoopRF24_Receive()
 		snprintf(printBuffer, sizeof(printBuffer), "\nReceived (%d):%d. %02.2f, %s, %s\n", packetReceived, dataRec.id, dataRec.temperature, dataRec.titleStr, dataRec.dataStr);
 		Serial.print(printBuffer);
 
-		if (!radio.write(&dataSend, sizeof(dataSend))) {
+#if defined(_RF24_SEND_RECEIVE_NOECHO_)
+
+#else
+	if (!radio.write(&dataSend, sizeof(dataSend))) {
 			Serial.println("RX: No ACK");
 		}
 		else {
@@ -127,6 +135,7 @@ void LoopRF24_Receive()
 		}
 		radio.startListening();
 #endif // (_OLD_SEND_VERSION_)
+#endif // (_RF24_SEND_RECEIVE_NOECHO_)
 
 		BlinkLed(50, 100);
 	}

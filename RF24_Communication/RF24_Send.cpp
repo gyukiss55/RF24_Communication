@@ -15,13 +15,12 @@
 
 #if defined (_RF24_SEND_)
 
-Package dataSend;
 Package dataReceived;
 
+const char* titleStr = TITLE_STR;
 
 void SetupRF24_Send()
 {
-	const char* titleStr = TITLE_STR;
 	Serial.println();
 	Serial.print(titleStr);
 	Serial.println(" 1.0.002. SetupRF24_Send:");
@@ -52,16 +51,11 @@ void SetupRF24_Send()
 	Serial.print(titleStr);
 	Serial.println(" SetupRF24_Send:");
 	digitalWrite(LED_BUILTIN, HIGH);
-	//memset(&dataSend, 0, sizeof(dataSend));
-	InitData(dataSend);
+	InitPackage(dataSend);
 
 	String t(titleStr);
 
-	strncpy(dataSend.titleStr, t.c_str(), t.length());
-	for (int i = 0; i < sizeof(dataSend.dataStr) - 1; ++i) {
-		dataSend.dataStr[i] = i % 10 + '0';
-		dataSend.dataStr[i + 1] = 0;
-	}
+	dataSend.packetId = 1;
 }
 
 #if defined (_OLD_SEND_VERSION_)
@@ -70,23 +64,33 @@ void SetupRF24_Send()
 
 void LoopRF24_Send()
 {
-	// Ensure we have stopped listening (even if we're not) or we won't be able to transmit
+	bool printEnable = false;
+	static uint32_t lastTimeTick = 0;
+	uint32_t currentTimeTick = millis();
+	if (currentTimeTick - lastTimeTick > 2000) {
+		printEnable = true;
+		lastTimeTick = currentTimeTick;
+	}
+// Ensure we have stopped listening (even if we're not) or we won't be able to transmit
 	radio.stopListening();
 #if defined (_OLD_SEND_VERSION_)
 	radio.write(&dataSend, sizeof(dataSend));
 #else
-	if (!radio.write(&dataSend, sizeof(dataSend)))
-		Serial.println("TX: No ACK");
-	else
-		Serial.println("TX: ACK");
+	bool echoStatus = radio.write(&dataSend, sizeof(dataSend));
+	if (printEnable) {
+		if (echoStatus)
+			Serial.println("TX: ACK");
+		else
+			Serial.println("TX: No ACK");
+	}
 #endif //(_OLD_SEND_VERSION_)
 
-	snprintf(printBuffer, sizeof(printBuffer), "\nSent:%d. %02.2f, %s, %s\n", dataSend.id, dataSend.temperature, dataSend.titleStr, dataSend.dataStr);
-	Serial.print(printBuffer);
+	if (printEnable) {
+		snprintf(printBuffer, sizeof(printBuffer), "\nSent:%d. %d %d %d %d\n", dataSend.packetId, dataSend.dccCommand[0].webId, dataSend.dccCommand[1].webId, dataSend.dccCommand[2].webId, dataSend.dccCommand[3].webId);
+		Serial.print(printBuffer);
+	}
 
-	dataSend.id = dataSend.id + 1;
-
-	dataSend.temperature = dataSend.temperature + 0.1;
+	dataSend.packetId = dataSend.packetId + 1;
 
 #if defined (_OLD_SEND_VERSION_)
 
@@ -106,7 +110,9 @@ void LoopRF24_Send()
 	while (!radio.available()) {
 		// Oh dear, no response received within our timescale
 		if (millis() - started_waiting_at > 250) {
-			Serial.print("TX: Got no reply");
+			if (printEnable) {
+				Serial.print("TX: Got no reply");
+			}
 			BlinkLed(100, 2000 - 100);
 			return;
 		}
@@ -119,8 +125,10 @@ void LoopRF24_Send()
 		packetReceived++;
 	}
 
-	snprintf(printBuffer, sizeof(printBuffer), "\nReceived(%d):%d. %02.2f, %s, %s\n", packetReceived, dataReceived.id, dataReceived.temperature, dataReceived.titleStr, dataReceived.dataStr);
-	Serial.print(printBuffer);
+	if (printEnable) {
+		snprintf(printBuffer, sizeof(printBuffer), "\nReceived(%d):%d. \n", packetReceived, dataReceived.packetId);
+		Serial.print(printBuffer);
+	}
 #endif // (_RF24_SEND_RECEIVE_NOECHO_)
 
 	BlinkLed(50, 200 - 100);

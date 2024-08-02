@@ -10,4 +10,6 @@
 void SetupRF24_Send();
 void LoopRF24_Send();
 
+extern Package dataSend;
+
 #endif

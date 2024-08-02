@@ -16,18 +16,15 @@
 #if defined (_RF24_RECEIVE_)
 
 Package dataRec;
-Package dataSend;
-
 
 uint32_t lastId = 0;
 uint32_t receivedNr = 0;
 uint32_t lostNr = 0;
 uint32_t lostMax = 0;
 
-
 void SetupRF24_Receive()
 {
-	InitData(dataRec);
+	InitPackage(dataRec);
 
 	Serial.println();
 	Serial.print(TITLE_STR);
@@ -100,7 +97,11 @@ void LoopRF24_Receive()
 		}
 #endif // (_OLD_SEND_VERSION_)
 
-		snprintf(printBuffer, sizeof(printBuffer), "\nReceived (%d):%d. %02.2f, %s, %s\n", packetReceived, dataRec.id, dataRec.temperature, dataRec.titleStr, dataRec.dataStr);
+		snprintf(printBuffer, sizeof(printBuffer), "\nReceived (%d):%d. %d %x %x %x %x, %d %x %x %x %x, %d %x %x %x %x, %d %x %x %x %x\n", packetReceived, dataRec.packetId, 
+			dataRec.dccCommand[0].webId, dataRec.dccCommand[0].command[0], dataRec.dccCommand[0].command[1], dataRec.dccCommand[0].command[2], dataRec.dccCommand[0].command[3],
+			dataRec.dccCommand[1].webId, dataRec.dccCommand[1].command[0], dataRec.dccCommand[1].command[1], dataRec.dccCommand[1].command[2], dataRec.dccCommand[1].command[3],
+			dataRec.dccCommand[2].webId, dataRec.dccCommand[2].command[0], dataRec.dccCommand[2].command[1], dataRec.dccCommand[2].command[2], dataRec.dccCommand[2].command[3],
+			dataRec.dccCommand[3].webId, dataRec.dccCommand[3].command[0], dataRec.dccCommand[3].command[1], dataRec.dccCommand[3].command[2], dataRec.dccCommand[3].command[3]);
 		Serial.print(printBuffer);
 
 #if defined(_RF24_SEND_RECEIVE_NOECHO_)
@@ -121,11 +122,7 @@ void LoopRF24_Receive()
 
 		//String t(titleStr);
 		String t(TITLE_STR);
-		dataSend.id = dataRec.id;
-		dataSend.temperature = dataRec.temperature;
-		strncpy(dataSend.titleStr, t.c_str(), t.length());
-		String d("ABCDEFGHIJKLMN");
-		strncpy(dataSend.dataStr, d.c_str(), d.length());
+		dataSend.packetId = dataRec.packetId;
 
 		if (!radio.write(&dataSend, sizeof(dataSend))) {
 			Serial.println("RX: No ACK");

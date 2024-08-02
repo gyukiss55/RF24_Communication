@@ -1,7 +1,10 @@
 //RF24_Communication.ino
 
-#include "Arduino.h"
+#include <Arduino.h>
+#include <string>
 #include "RF24_Definitions.h"
+#include "RF24Data.h"
+#include "DCCWebServer.h"
 
 
 #if defined _RF24_STREAMING_
@@ -54,6 +57,13 @@ void setup()
 
 }
 
+#if (defined(RASPI) || defined (ARDUINO_PICO_MAJOR)) && defined(_RF24_SEND_)
+void setup1()
+{
+    SetupDCCWebServer ();
+}
+#endif
+
 void loop()
 {
 #if defined (_RF24_STREAMING_)
@@ -71,4 +81,16 @@ void loop()
 #endif
 
 }
+
+#if (defined(RASPI) || defined (ARDUINO_PICO_MAJOR)) && defined(_RF24_SEND_)
+void loop1()
+{
+    std::string command;
+    LoopDCCWebServer (command);
+    if (command.length () > 0) {
+        FillPacketData (command);
+    }
+}
+#endif
+
 
